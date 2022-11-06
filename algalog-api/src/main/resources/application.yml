@@ -3,3 +3,5 @@ spring:
     url: jdbc:mysql://localhost/algalog?serverTimezone=UTC
     username: root
     password: algalog
+  jpa:
+    show-sql: true
