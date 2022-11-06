@@ -1,4 +1,4 @@
-package com.github.renatocardosoalves.algalog.controller;
+package com.github.renatocardosoalves.algalog.api.controller;
 
 import com.github.renatocardosoalves.algalog.domain.model.Cliente;
 import com.github.renatocardosoalves.algalog.domain.repository.ClienteRepository;
