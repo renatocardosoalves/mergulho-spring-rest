@@ -1,5 +1,6 @@
 package com.github.renatocardosoalves.algalog.api.exception;
 
+import com.github.renatocardosoalves.algalog.domain.exception.ClienteNaoEncontradoException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -34,6 +36,17 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .comCampos(campos)
                 .build();
         return super.handleExceptionInternal(ex, problema, headers, status, request);
+    }
+
+    @ExceptionHandler(ClienteNaoEncontradoException.class)
+    public ResponseEntity<Object> handleClienteNaoEncontradoException(ClienteNaoEncontradoException ex, WebRequest request) {
+        var status = HttpStatus.NOT_FOUND;
+        var problema = Problema.builder()
+                .comStatus(status.value())
+                .comDataHora(LocalDateTime.now())
+                .comTitulo(ex.getMessage())
+                .build();
+        return super.handleExceptionInternal(ex, problema, new HttpHeaders(), status, request);
     }
 
 }
