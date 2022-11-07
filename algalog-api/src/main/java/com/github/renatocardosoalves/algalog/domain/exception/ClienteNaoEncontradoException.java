@@ -1,9 +1,9 @@
 package com.github.renatocardosoalves.algalog.domain.exception;
 
-public class ClienteNaoEncontradoException extends RuntimeException {
+public class ClienteNaoEncontradoException extends RecursoNaoEncontradoException {
 
     public ClienteNaoEncontradoException(Long clienteId) {
-        super(String.format("O cliente com id %d não foi encontrado.", clienteId));
+        super("O cliente com id %d não foi encontrado.", clienteId);
     }
 
 }

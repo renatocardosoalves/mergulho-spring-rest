@@ -1,5 +1,6 @@
 package com.github.renatocardosoalves.algalog.domain.model;
 
+import com.github.renatocardosoalves.algalog.domain.validation.ValidationGroups;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Getter
@@ -19,6 +21,7 @@ import javax.validation.constraints.Size;
 public class Cliente {
 
     @EqualsAndHashCode.Include
+    @NotNull(groups = ValidationGroups.ClienteId.class)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long clienteId;

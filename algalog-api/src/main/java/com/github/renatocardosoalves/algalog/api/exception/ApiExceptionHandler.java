@@ -1,7 +1,7 @@
 package com.github.renatocardosoalves.algalog.api.exception;
 
-import com.github.renatocardosoalves.algalog.domain.exception.ClienteNaoEncontradoException;
 import com.github.renatocardosoalves.algalog.domain.exception.NegocioException;
+import com.github.renatocardosoalves.algalog.domain.exception.RecursoNaoEncontradoException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -32,8 +32,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return super.handleExceptionInternal(ex, problema, headers, status, request);
     }
 
-    @ExceptionHandler(ClienteNaoEncontradoException.class)
-    public ResponseEntity<Object> handleClienteNaoEncontradoException(ClienteNaoEncontradoException ex, WebRequest request) {
+    @ExceptionHandler(RecursoNaoEncontradoException.class)
+    public ResponseEntity<Object> handleRecursoNaoEncontradoException(RecursoNaoEncontradoException ex, WebRequest request) {
         return this.lancarProblema(HttpStatus.NOT_FOUND, ex, request);
     }
 
