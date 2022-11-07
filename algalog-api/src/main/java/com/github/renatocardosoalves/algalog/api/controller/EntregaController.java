@@ -4,6 +4,7 @@ import com.github.renatocardosoalves.algalog.api.assembler.EntregaAssembler;
 import com.github.renatocardosoalves.algalog.api.model.response.EntregaResponse;
 import com.github.renatocardosoalves.algalog.api.model.request.EntregaRequest;
 import com.github.renatocardosoalves.algalog.domain.service.CatalogoEntregaService;
+import com.github.renatocardosoalves.algalog.domain.service.FinalizacaoEntregaService;
 import com.github.renatocardosoalves.algalog.domain.service.SolicitacaoEntregaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ public class EntregaController {
 
     private final SolicitacaoEntregaService solicitacaoEntregaService;
     private final CatalogoEntregaService catalogoEntregaService;
+    private final FinalizacaoEntregaService finalizacaoEntregaService;
     private final EntregaAssembler entregaAssembler;
 
     @PostMapping
@@ -36,6 +38,12 @@ public class EntregaController {
     @GetMapping("/{entregaId}")
     public EntregaResponse buscar(@PathVariable Long entregaId) {
         return this.entregaAssembler.toModel(this.catalogoEntregaService.buscar(entregaId));
+    }
+
+    @PutMapping("/{entregaId}/finalizacao")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void finalizar(@PathVariable Long entregaId) {
+        this.finalizacaoEntregaService.finalizar(entregaId);
     }
 
 }

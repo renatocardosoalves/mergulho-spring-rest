@@ -1,5 +1,6 @@
 package com.github.renatocardosoalves.algalog.domain.model;
 
+import com.github.renatocardosoalves.algalog.domain.exception.NegocioException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -47,6 +48,14 @@ public class Entrega {
         ocorrencia.setEntrega(this);
         this.ocorrencias.add(ocorrencia);
         return ocorrencia;
+    }
+
+    public void finalizar() {
+        if (StatusEntrega.PENDENTE != this.status) {
+            throw new NegocioException("Entrega não pode ser finalizada");
+        }
+        this.status = StatusEntrega.FINALIZADA;
+        this.dataFinalizacao = OffsetDateTime.now();
     }
 
 }
