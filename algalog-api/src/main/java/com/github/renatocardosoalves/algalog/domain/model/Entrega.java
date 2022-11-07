@@ -7,6 +7,8 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -34,5 +36,17 @@ public class Entrega {
 
     @Embedded
     private Destinatario destinatario;
+
+    @OneToMany(mappedBy = "entrega", cascade = CascadeType.ALL)
+    private List<Ocorrencia> ocorrencias = new ArrayList<>();
+
+    public Ocorrencia adicionarOcorrencia(String descricao) {
+        var ocorrencia = new Ocorrencia();
+        ocorrencia.setDescricao(descricao);
+        ocorrencia.setDataRegistro(OffsetDateTime.now());
+        ocorrencia.setEntrega(this);
+        this.ocorrencias.add(ocorrencia);
+        return ocorrencia;
+    }
 
 }
