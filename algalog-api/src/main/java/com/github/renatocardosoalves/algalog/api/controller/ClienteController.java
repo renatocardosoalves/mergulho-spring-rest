@@ -1,6 +1,8 @@
 package com.github.renatocardosoalves.algalog.api.controller;
 
-import com.github.renatocardosoalves.algalog.domain.model.Cliente;
+import com.github.renatocardosoalves.algalog.api.assembler.ClienteAssembler;
+import com.github.renatocardosoalves.algalog.api.model.request.ClienteRequest;
+import com.github.renatocardosoalves.algalog.api.model.response.ClienteResponse;
 import com.github.renatocardosoalves.algalog.domain.service.CatalogoClienteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,27 +17,30 @@ import java.util.List;
 public class ClienteController {
 
     private final CatalogoClienteService catalogoClienteService;
+    private final ClienteAssembler clienteAssembler;
 
     @GetMapping
-    public List<Cliente> listar() {
-        return this.catalogoClienteService.listar();
+    public List<ClienteResponse> listar() {
+        return this.clienteAssembler.toCollectionModel(this.catalogoClienteService.listar());
     }
 
     @GetMapping("/{clienteId}")
-    public Cliente buscar(@PathVariable Long clienteId) {
-        return this.catalogoClienteService.buscar(clienteId);
+    public ClienteResponse buscar(@PathVariable Long clienteId) {
+        return this.clienteAssembler.toModel(this.catalogoClienteService.buscar(clienteId));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Cliente adicionar(@RequestBody @Valid Cliente cliente) {
-        return this.catalogoClienteService.salvar(cliente);
+    public ClienteResponse adicionar(@RequestBody @Valid ClienteRequest request) {
+        var novoCliente = this.clienteAssembler.toEntity(request);
+        return this.clienteAssembler.toModel(this.catalogoClienteService.salvar(novoCliente));
     }
 
     @PutMapping("/{clienteId}")
-    public Cliente atualizar(@PathVariable Long clienteId, @RequestBody @Valid Cliente cliente) {
+    public ClienteResponse atualizar(@PathVariable Long clienteId, @RequestBody @Valid ClienteRequest request) {
+        var cliente = this.clienteAssembler.toEntity(request);
         cliente.setClienteId(clienteId);
-        return this.catalogoClienteService.salvar(cliente);
+        return this.clienteAssembler.toModel(this.catalogoClienteService.salvar(cliente));
     }
 
     @DeleteMapping("/{clienteId}")

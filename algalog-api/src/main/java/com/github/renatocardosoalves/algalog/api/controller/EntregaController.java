@@ -1,6 +1,8 @@
 package com.github.renatocardosoalves.algalog.api.controller;
 
-import com.github.renatocardosoalves.algalog.domain.model.Entrega;
+import com.github.renatocardosoalves.algalog.api.assembler.EntregaAssembler;
+import com.github.renatocardosoalves.algalog.api.model.response.EntregaResponse;
+import com.github.renatocardosoalves.algalog.api.model.request.EntregaRequest;
 import com.github.renatocardosoalves.algalog.domain.service.CatalogoEntregaService;
 import com.github.renatocardosoalves.algalog.domain.service.SolicitacaoEntregaService;
 import lombok.RequiredArgsConstructor;
@@ -17,22 +19,23 @@ public class EntregaController {
 
     private final SolicitacaoEntregaService solicitacaoEntregaService;
     private final CatalogoEntregaService catalogoEntregaService;
-
+    private final EntregaAssembler entregaAssembler;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Entrega solicitar(@RequestBody @Valid Entrega entrega) {
-        return this.solicitacaoEntregaService.solicitar(entrega);
+    public EntregaResponse solicitar(@RequestBody @Valid EntregaRequest request) {
+        var entregaSolicitada = this.entregaAssembler.toEntity(request);
+        return this.entregaAssembler.toModel(this.solicitacaoEntregaService.solicitar(entregaSolicitada));
     }
 
     @GetMapping
-    public List<Entrega> listar() {
-        return this.catalogoEntregaService.listar();
+    public List<EntregaResponse> listar() {
+        return this.entregaAssembler.toCollectionModel(this.catalogoEntregaService.listar());
     }
 
     @GetMapping("/{entregaId}")
-    public Entrega buscar(@PathVariable Long entregaId) {
-        return this.catalogoEntregaService.buscar(entregaId);
+    public EntregaResponse buscar(@PathVariable Long entregaId) {
+        return this.entregaAssembler.toModel(this.catalogoEntregaService.buscar(entregaId));
     }
 
 }
