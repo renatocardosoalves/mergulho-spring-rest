@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -53,7 +53,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     private Problema criarProblema(HttpStatus status, String titulo, List<Campo> campos) {
         return Problema.builder()
                 .comStatus(status.value())
-                .comDataHora(LocalDateTime.now())
+                .comDataHora(OffsetDateTime.now())
                 .comTitulo(titulo)
                 .comCampos(campos)
                 .build();
